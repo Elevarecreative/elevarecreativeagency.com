@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Elevare Creative — Tech-forward Design & Automation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{
+      --brand-dark:#0F766E;    /* Vibrant Emerald */
+      --brand-med:#14B8A6;     /* Bright Teal */
+      --brand-light:#5EEAD4;   /* Light Teal */
+      --brand-accent:#F59E0B;  /* Vibrant Amber */
+      --brand-slate:#475569;   /* Cool Slate */
+    }
+    /* Brand background and overlays */
+    .grid-bg {
+      background:
+        radial-gradient(1000px 400px at 20% 10%, color-mix(in oklab, var(--brand-light) 18%, transparent), transparent 60%),
+        radial-gradient(900px 500px at 80% 10%, color-mix(in oklab, var(--brand-med) 14%, transparent), transparent 60%),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: auto, auto, 60px 60px, 60px 60px;
+      background-position: center;
+    }
+    .glass { backdrop-filter: blur(10px); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.10); }
+    .glow { box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand-light) 18%, transparent), 0 10px 30px color-mix(in oklab, var(--brand-med) 30%, transparent); }
+    .accent-text { background: linear-gradient(135deg, var(--brand-light) 0%, var(--brand-med) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .chip { border: 1px solid color-mix(in oklab, var(--brand-med) 70%, transparent); background: color-mix(in oklab, var(--brand-med) 25%, transparent); color: #ffffff; font-weight: 500; }
+    .float { transition: transform .25s ease, box-shadow .25s ease; }
+    .float:hover { transform: translateY(-6px); box-shadow: 0 16px 40px color-mix(in oklab, var(--brand-med) 18%, transparent); }
+    .content-width { max-width: 1200px; }
+    :target { scroll-margin-top: 90px; }
+
+    /* Dividers */
+    .beam { position: relative; height: 90px; overflow: hidden; }
+    .beam::before, .beam::after {
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(800px 100px at 50% 120%, color-mix(in oklab, var(--brand-light) 25%, transparent), transparent 70%);
+      filter: blur(10px);
+      animation: beamMove 8s linear infinite; opacity: .6;
+    }
+    .beam::after { animation-direction: reverse; opacity: .4; }
+    @keyframes beamMove { 0% { transform: translateX(-12%);} 50% { transform: translateX(12%);} 100% { transform: translateX(-12%);} }
+    @keyframes gradient-shift {
+      0% { background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #f0fdfa 100%); }
+      25% { background: linear-gradient(135deg, #f0fdfa 0%, #dbeafe 50%, #ffffff 100%); }
+      50% { background: linear-gradient(135deg, #ffffff 0%, #f0fdfa 50%, #dbeafe 100%); }
+      75% { background: linear-gradient(135deg, #dbeafe 0%, #ffffff 50%, #f0fdfa 100%); }
+      100% { background: linear-gradient(135deg, #f0fdfa 0%, #dbeafe 50%, #ffffff 100%); }
+    }
+    .animate-gradient-shift { animation: gradient-shift 20s ease-in-out infinite; }
+    .wave {
+      --c: color-mix(in oklab, var(--brand-med) 22%, transparent);
+      background: radial-gradient(800px 160px at 50% -30%, var(--c), transparent 70%);
+      mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="120" viewBox="0 0 1440 120" preserveAspectRatio="none"><path fill="black" d="M0,80 C240,120 480,0 720,60 C960,120 1200,40 1440,80 L1440,120 L0,120 Z"/></svg>');
+      mask-size: cover; mask-repeat: no-repeat; mask-position: center bottom; height: 70px;
+    }
+
+    /* Carousel */
+    .carousel-viewport { overflow: hidden; }
+    .carousel-track { display: flex; gap: 16px; will-change: transform; transition: transform .45s ease; }
+    .card { min-width: 85%; max-width: 85%; }
+    @media (min-width: 768px) {
+      .card { min-width: calc((100% - 16px) / 2); max-width: calc((100% - 16px) / 2); }
+    }
+    @media (min-width: 1024px) {
+      .card { min-width: calc((100% - 32px) / 3); max-width: calc((100% - 32px) / 3); }
+    }
+
+
+    
+    /* Smooth scrolling */
+    html { scroll-behavior: smooth; }
+    
+    /* Mobile menu animation */
+    .mobile-menu { transform: translateX(-100%); transition: transform 0.3s ease; }
+    .mobile-menu.open { transform: translateX(0); }
+  </style>
+</head>
+<body class="bg-slate-800 text-white grid-bg min-h-screen">
+  
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full z-50 glass md:glass bg-slate-800 md:bg-transparent">
+    <div class="content-width mx-auto px-6 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-lg overflow-hidden">
+            <img src="https://i.imgur.com/VUzFvKq.png" alt="Elevare Creative Logo" class="w-full h-full object-contain" onerror="this.src=''; this.alt='Logo failed to load'; this.style.display='none';">
+          </div>
+          <span class="text-xl font-bold accent-text">Elevare Creative</span>
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#services" class="text-gray-300 hover:text-white transition-colors">Services</a>
+          <a href="#portfolio" class="text-gray-300 hover:text-white transition-colors">Portfolio</a>
+          <a href="#pricing" class="text-gray-300 hover:text-white transition-colors">Pricing</a>
+          <a href="#about" class="text-gray-300 hover:text-white transition-colors">About</a>
+          <a href="#blog" class="text-gray-300 hover:text-white transition-colors">Blog</a>
+          <a href="#contact" class="text-gray-300 hover:text-white transition-colors">Contact</a>
+          <button class="bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-2 rounded-lg font-medium hover:shadow-lg transition-all">
+            Get Started
+          </button>
+        </div>
+        
+        <button id="mobile-menu-btn" class="md:hidden p-2">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="mobile-menu md:hidden fixed inset-y-0 left-0 w-64 bg-slate-800 border-r border-gray-700 p-6">
+      <div class="flex flex-col space-y-6 mt-16">
+        <a href="#services" class="text-gray-300 hover:text-white transition-colors">Services</a>
+        <a href="#portfolio" class="text-gray-300 hover:text-white transition-colors">Portfolio</a>
+        <a href="#pricing" class="text-gray-300 hover:text-white transition-colors">Pricing</a>
+        <a href="#about" class="text-gray-300 hover:text-white transition-colors">About</a>
+        <a href="#blog" class="text-gray-300 hover:text-white transition-colors">Blog</a>
+        <a href="#contact" class="text-gray-300 hover:text-white transition-colors">Contact</a>
+        <button class="bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-2 rounded-lg font-medium w-full">
+          Get Started
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6">
+    <div class="content-width mx-auto text-center">
+      <div class="inline-flex items-center space-x-2 chip px-3 sm:px-4 py-2 rounded-full mb-6 sm:mb-8">
+        <span class="w-2 h-2 bg-teal-400 rounded-full animate-pulse"></span>
+        <span class="text-xs sm:text-sm">Tech-forward Design & Automation</span>
+      </div>
+      
+      <h1 class="text-3xl sm:text-5xl md:text-7xl font-bold mb-4 sm:mb-6 leading-tight px-2">
+        Elevate Your
+        <span class="accent-text">Digital Presence</span>
+      </h1>
+      
+      <p class="text-lg sm:text-xl text-gray-300 mb-8 sm:mb-12 max-w-2xl mx-auto px-2">
+        We craft stunning websites, automate your workflows, and build digital experiences that drive results. From concept to launch, we're your creative technology partner.
+      </p>
+      
+      <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
+        <button onclick="scrollToContact()" class="bg-gradient-to-r from-teal-500 to-cyan-500 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium text-base sm:text-lg glow hover:scale-105 transition-all">
+          Start Your Project
+        </button>
+        <button onclick="scrollToPortfolio()" class="glass px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium text-base sm:text-lg hover:bg-white/10 transition-all">
+          View Our Work
+        </button>
+      </div>
+      </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- Beam Divider -->
+  <div class="beam"></div>
+
+  <!-- Services Section -->
+  <section id="services" class="py-16 sm:py-20 px-4 sm:px-6 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-teal-50 animate-gradient-shift"></div>
+    <div class="relative z-10">
+    <div class="content-width mx-auto">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 px-2">Our <span class="accent-text">Services</span></h2>
+        <p class="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto px-2">
+          From web design to automation, we provide comprehensive digital solutions that scale with your business.
+        </p>
+      </div>
+      
+      <div class="grid gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div class="glass p-6 sm:p-8 rounded-2xl float">
+          <div class="w-12 h-12 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-lg flex items-center justify-center mb-4 sm:mb-6">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900">Web Design & Development</h3>
+          <p class="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base">Custom websites that convert visitors into customers. Responsive, fast, and optimized for search engines.</p>
+          <ul class="text-sm text-gray-600 space-y-1 sm:space-y-2">
+            <li>• Custom HTML/CSS websites</li>
+            <li>• E-commerce solutions</li>
+            <li>• Mobile-first responsive design</li>
+            <li>• SEO optimization</li>
+          </ul>
+        </div>
+        
+        <div class="glass p-6 sm:p-8 rounded-2xl float">
+          <div class="w-12 h-12 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-lg flex items-center justify-center mb-4 sm:mb-6">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900">Workflow Automation</h3>
+          <p class="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base">Streamline your business processes with intelligent automation that saves time and reduces errors.</p>
+          <ul class="text-sm text-gray-600 space-y-1 sm:space-y-2">
+            <li>• End-to-end process automation</li>
+            <li>• CRM & sales pipeline automation</li>
+            <li>• Marketing automation funnels</li>
+            <li>• Centralized data hub</li>
+            <li>• Custom API and system integration</li>
+          </ul>
+        </div>
+        
+        <div class="glass p-6 sm:p-8 rounded-2xl float">
+          <div class="w-12 h-12 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center mb-4 sm:mb-6">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900">Brand Identity</h3>
+          <p class="text-gray-700 mb-4 sm:mb-6 text-sm sm:text-base">Create a memorable brand that stands out in your market with cohesive visual identity and messaging.</p>
+          <ul class="text-sm text-gray-600 space-y-1 sm:space-y-2">
+            <li>• Logo design & brand guidelines</li>
+            <li>• Marketing materials</li>
+            <li>• Social media assets</li>
+            <li>• Brand strategy consulting</li>
+          </ul>
+        </div>
+      </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- Beam Divider -->
+  <div class="beam"></div>
+
+  <!-- About Section -->
+  <section id="about" class="py-16 sm:py-20 px-4 sm:px-6 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-teal-50 animate-gradient-shift"></div>
+    <div class="relative z-10">
+    <div class="content-width mx-auto">
+      <div class="grid lg:grid-cols-2 gap-12 sm:gap-16 items-center">
+        <div>
+          <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-900">Why Choose <span class="accent-text">Elevare Creative</span>?</h2>
+          <p class="text-lg sm:text-xl text-gray-700 mb-6 sm:mb-8">
+            We're not just another web agency. We're your strategic technology partner, combining creative design with powerful automation to help your business thrive in the digital age.
+          </p>
+          
+          <div class="space-y-4 sm:space-y-6">
+            <div class="flex items-start space-x-3 sm:space-x-4">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <svg class="w-3 sm:w-4 h-3 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-base sm:text-lg font-semibold mb-1 sm:mb-2 text-gray-900">Results-Driven Approach</h3>
+                <p class="text-gray-700 text-sm sm:text-base">Every project is measured by its impact on your business goals, not just aesthetics.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-3 sm:space-x-4">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-orange-400 to-yellow-500 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <svg class="w-3 sm:w-4 h-3 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-base sm:text-lg font-semibold mb-1 sm:mb-2 text-gray-900">Automation Expertise</h3>
+                <p class="text-gray-700 text-sm sm:text-base">We don't just build websites—we create systems that work for you 24/7.</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-3 sm:space-x-4">
+              <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-400 to-pink-500 rounded-lg flex items-center justify-center flex-shrink-0 mt-1">
+                <svg class="w-3 sm:w-4 h-3 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-base sm:text-lg font-semibold mb-1 sm:mb-2 text-gray-900">Fast Turnaround</h3>
+                <p class="text-gray-700 text-sm sm:text-base">Agile development process means you see results quickly without sacrificing quality.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="glass p-8 rounded-2xl">
+          <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-gradient-to-br from-teal-400 to-cyan-500 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span class="text-2xl font-bold text-white">EC</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-2 text-gray-900">Ready to Get Started?</h3>
+            <p class="text-gray-700">Let's discuss your project and see how we can help you achieve your goals.</p>
+          </div>
+          
+          <div class="space-y-4">
+            <div class="flex items-center space-x-3 text-sm">
+              <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-gray-700">Free consultation & project estimate</span>
+            </div>
+
+            <div class="flex items-center space-x-3 text-sm">
+              <svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              <span class="text-gray-700">Ongoing support & maintenance</span>
+            </div>
+          </div>
+          
+          <button onclick="scrollToContact()" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-3 rounded-lg font-medium mt-6 hover:shadow-lg transition-all">
+            Schedule Free Consultation
+          </button>
+        </div>
+      </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- Wave Divider -->
+  <div class="wave"></div>
+
+  <!-- Portfolio Section -->
+  <section id="portfolio" class="py-16 sm:py-20 px-4 sm:px-6" style="background: linear-gradient(135deg, #1E293B 0%, #334155 100%);">
+    <div class="content-width mx-auto">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-white px-2">Recent <span class="accent-text">Projects</span></h2>
+        <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto px-2">
+          Take a look at some of our latest work and see how we've helped businesses transform their digital presence.
+        </p>
+      </div>
+      
+      <div class="carousel-viewport">
+        <div id="carousel-track" class="carousel-track">
+          <div class="card glass rounded-2xl overflow-hidden float">
+            <div class="h-40 sm:h-48 bg-black overflow-hidden">
+              <img src="https://i.imgur.com/TedFY2V.png" alt="Mobile Bookkeeping Website" class="w-full h-full object-cover" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+            </div>
+            <div class="p-4 sm:p-6">
+              <h3 class="text-lg sm:text-xl font-bold mb-2 text-white">MobileBookkeeping</h3>
+              <p class="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">Professional bookkeeping services website with clean design and clear service offerings.</p>
+              <div class="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Web Design</span>
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Responsive</span>
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Business</span>
+              </div>
+              <button onclick="showProjectDetails('mobilebookkeeping')" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 px-4 py-2 rounded-lg font-medium text-sm hover:shadow-lg transition-all">
+                View Details
+              </button>
+            </div>
+          </div>
+          
+          <div class="card glass rounded-2xl overflow-hidden float">
+            <div class="h-40 sm:h-48 bg-black overflow-hidden">
+              <img src="https://i.imgur.com/kGHIfCJ.png" alt="Lumecare Cleaning Website" class="w-full h-full object-cover" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+            </div>
+            <div class="p-4 sm:p-6">
+              <h3 class="text-lg sm:text-xl font-bold mb-2 text-white">LumeCare Cleaning</h3>
+              <p class="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">Modern cleaning service website with vibrant design and service showcase.</p>
+              <div class="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Web Design</span>
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Service Business</span>
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Modern UI</span>
+              </div>
+              <button onclick="showProjectDetails('lumecare')" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 px-4 py-2 rounded-lg font-medium text-sm hover:shadow-lg transition-all">
+                View Details
+              </button>
+            </div>
+          </div>
+          
+          <div class="card glass rounded-2xl overflow-hidden float">
+            <div class="h-40 sm:h-48 bg-black overflow-hidden flex items-center justify-center">
+              <img src="https://i.imgur.com/n0dcoM7.png" alt="DigiSight Edge Logo" class="max-w-full max-h-full object-contain" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+            </div>
+            <div class="p-4 sm:p-6">
+              <h3 class="text-lg sm:text-xl font-bold mb-2 text-white">DigiSight Edge Logo</h3>
+              <p class="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">Professional logo design for digital marketing agency with modern typography and clean aesthetics.</p>
+              <div class="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Logo Design</span>
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Branding</span>
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Typography</span>
+              </div>
+              <button onclick="showProjectDetails('digisight')" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 px-4 py-2 rounded-lg font-medium text-sm hover:shadow-lg transition-all">
+                View Details
+              </button>
+            </div>
+          </div>
+          
+          <div class="card glass rounded-2xl overflow-hidden float">
+            <div class="h-40 sm:h-48 bg-black overflow-hidden">
+              <img src="https://i.imgur.com/CIdHycU.jpeg" alt="Lumecare Cleaning Flyer" class="w-full h-full object-cover" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+            </div>
+            <div class="p-4 sm:p-6">
+              <h3 class="text-lg sm:text-xl font-bold mb-2 text-white">LumeCare Flyer Design</h3>
+              <p class="text-gray-300 mb-3 sm:mb-4 text-sm sm:text-base">Eye-catching promotional flyer design for cleaning services with compelling visuals and clear messaging.</p>
+              <div class="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Print Design</span>
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Marketing</span>
+                <span class="chip px-2 sm:px-3 py-1 rounded-full text-xs">Promotional</span>
+              </div>
+              <button onclick="showProjectDetails('lumeflyer')" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 px-4 py-2 rounded-lg font-medium text-sm hover:shadow-lg transition-all">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex justify-center mt-8 space-x-4">
+        <button id="carousel-prev" class="glass p-3 rounded-lg hover:bg-white/10 transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        <button id="carousel-next" class="glass p-3 rounded-lg hover:bg-white/10 transition-all">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+      </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- Beam Divider -->
+  <div class="beam"></div>
+
+  <!-- Pricing Calculator Section -->
+  <section id="pricing" class="py-16 sm:py-20 px-4 sm:px-6 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-teal-50 animate-gradient-shift"></div>
+    <div class="relative z-10">
+    <div class="content-width mx-auto">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 px-2">Project <span class="accent-text">Calculator</span></h2>
+        <p class="text-lg sm:text-xl text-gray-700 max-w-2xl mx-auto px-2">
+          Get an instant estimate for your project. Select the services you need and see transparent pricing.
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8 sm:gap-12">
+        <!-- Calculator Form -->
+        <div class="glass p-6 sm:p-8 rounded-2xl">
+          <h3 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900">Build Your Quote</h3>
+          
+          <div class="space-y-6 sm:space-y-8">
+            <!-- Web Design & Development -->
+            <div>
+              <h4 class="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center text-gray-900">
+                <svg class="w-4 sm:w-5 h-4 sm:h-5 text-teal-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+                Web Design & Development
+              </h4>
+              <div class="space-y-2 sm:space-y-3">
+                <label class="flex items-start space-x-2 sm:space-x-3 cursor-pointer">
+                  <input type="radio" name="website" value="0" class="text-teal-500 focus:ring-teal-400 mt-1" checked onchange="updateCalculator()">
+                  <span class="text-gray-700 text-sm sm:text-base">None</span>
+                </label>
+                <label class="flex items-start space-x-2 sm:space-x-3 cursor-pointer">
+                  <input type="radio" name="website" value="500" class="text-teal-500 focus:ring-teal-400 mt-1" onchange="updateCalculator()">
+                  <span class="text-gray-700 text-sm sm:text-base">Basic Website (1-3 pages) - $400-$600</span>
+                </label>
+                <label class="flex items-start space-x-2 sm:space-x-3 cursor-pointer">
+                  <input type="radio" name="website" value="1000" class="text-teal-500 focus:ring-teal-400 mt-1" onchange="updateCalculator()">
+                  <span class="text-gray-700 text-sm sm:text-base">Standard Website (5-7 pages) - $800-$1,200</span>
+                </label>
+                <label class="flex items-start space-x-2 sm:space-x-3 cursor-pointer">
+                  <input type="radio" name="website" value="2000" class="text-teal-500 focus:ring-teal-400 mt-1" onchange="updateCalculator()">
+                  <span class="text-gray-700 text-sm sm:text-base">E-commerce Website - $1,500-$2,500</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Add-ons -->
+            <div id="addons-section" class="hidden">
+              <h5 class="text-md font-medium mb-3 text-teal-600">Add-ons</h5>
+              <div class="space-y-3 ml-4">
+                <label class="flex items-center space-x-3 cursor-pointer">
+                  <input type="checkbox" name="seo" value="200" class="text-teal-500 focus:ring-teal-400" onchange="updateCalculator()">
+                  <span class="text-gray-700">SEO Optimization - $200</span>
+                </label>
+                <label class="flex items-center space-x-3 cursor-pointer">
+                  <input type="checkbox" name="custom-features" value="275" class="text-teal-500 focus:ring-teal-400" onchange="updateCalculator()">
+                  <span class="text-gray-700">Custom Features - $150-$400</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Workflow Automation -->
+            <div>
+              <h4 class="text-lg font-semibold mb-4 flex items-center text-gray-900">
+                <svg class="w-5 h-5 text-orange-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                </svg>
+                Workflow Automation
+              </h4>
+              <div class="space-y-3">
+                <label class="flex items-center space-x-3 cursor-pointer">
+                  <input type="checkbox" name="crm" value="400" class="text-teal-500 focus:ring-teal-400" onchange="updateCalculator()">
+                  <span class="text-gray-700">Basic CRM Integration - $300-$500</span>
+                </label>
+                <label class="flex items-center space-x-3 cursor-pointer">
+                  <input type="checkbox" name="email-automation" value="550" class="text-teal-500 focus:ring-teal-400" onchange="updateCalculator()">
+                  <span class="text-gray-700">Email Marketing Automation - $400-$700</span>
+                </label>
+                <label class="flex items-center space-x-3 cursor-pointer">
+                  <input type="checkbox" name="data-sync" value="700" class="text-teal-500 focus:ring-teal-400" onchange="updateCalculator()">
+                  <span class="text-gray-700">Data Synchronization - $500-$900</span>
+                </label>
+                <label class="flex items-center space-x-3 cursor-pointer">
+                  <input type="checkbox" name="api-integration" value="1000" class="text-teal-500 focus:ring-teal-400" onchange="updateCalculator()">
+                  <span class="text-gray-700">Custom API Integration - Starts at $1,000</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Brand Identity -->
+            <div>
+              <h4 class="text-lg font-semibold mb-4 flex items-center text-gray-900">
+                <svg class="w-5 h-5 text-purple-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                </svg>
+                Brand Identity
+              </h4>
+              <div class="space-y-3">
+                <label class="flex items-center space-x-3 cursor-pointer">
+                  <input type="checkbox" name="logo" value="400" class="text-teal-500 focus:ring-teal-400" onchange="updateCalculator()">
+                  <span class="text-gray-700">Logo Design + Guidelines - $300-$500</span>
+                </label>
+                <label class="flex items-center space-x-3 cursor-pointer">
+                  <input type="checkbox" name="brand-kit" value="950" class="text-teal-500 focus:ring-teal-400" onchange="updateCalculator()">
+                  <span class="text-gray-700">Full Brand Kit - $700-$1,200</span>
+                </label>
+                <label class="flex items-center space-x-3 cursor-pointer">
+                  <input type="checkbox" name="social-kit" value="300" class="text-teal-500 focus:ring-teal-400" onchange="updateCalculator()">
+                  <span class="text-gray-700">Social Media Kit - $200-$400</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Brand Strategy Consulting -->
+            <div>
+              <h4 class="text-lg font-semibold mb-4 flex items-center text-gray-900">
+                <svg class="w-5 h-5 text-yellow-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Brand Strategy Consulting
+              </h4>
+              <div class="flex items-center space-x-4">
+                <label class="text-gray-700">Hours needed:</label>
+                <input type="number" id="consulting-hours" min="0" max="50" value="0" class="w-20 px-3 py-2 bg-white border border-gray-300 rounded-lg focus:border-teal-400 focus:outline-none text-gray-900" onchange="updateCalculator()">
+                <span class="text-gray-600 text-sm">× $75/hour</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quote Summary -->
+        <div class="glass p-8 rounded-2xl">
+          <h3 class="text-2xl font-bold mb-6 text-gray-900">Your Quote</h3>
+          
+          <div id="quote-breakdown" class="space-y-4 mb-8">
+            <div class="text-center text-gray-600 py-8">
+              <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+              </svg>
+              <p>Select services above to see your estimate</p>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-300 pt-6">
+            <div class="flex justify-between items-center mb-6">
+              <span class="text-xl font-semibold text-gray-900">Estimated Total:</span>
+              <span id="total-price" class="text-3xl font-bold accent-text">$0</span>
+            </div>
+            
+            <div class="bg-teal-500/10 border border-teal-500/20 rounded-lg p-4 mb-6">
+              <p class="text-sm text-teal-700">
+                <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                This is an estimate based on typical project scope. Final pricing may vary based on specific requirements and complexity.
+              </p>
+            </div>
+
+            <button onclick="requestQuoteWithCalculator()" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all mb-4">
+              Request Detailed Quote
+            </button>
+            
+            <button onclick="scrollToContact()" class="w-full glass px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-all">
+              Discuss My Project
+            </button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- Beam Divider -->
+  <div class="beam"></div>
+
+  <!-- Blog Section -->
+  <section id="blog" class="py-16 sm:py-20 px-4 sm:px-6" style="background: linear-gradient(135deg, #1E293B 0%, #334155 100%);">
+    <div class="content-width mx-auto">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-white px-2">Latest <span class="accent-text">Insights</span></h2>
+        <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto px-2">
+          Stay updated with the latest trends in web design, automation, and digital marketing strategies.
+        </p>
+      </div>
+      
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Blog Post 1 -->
+        <article class="glass rounded-2xl overflow-hidden float">
+          <div class="p-6">
+            <div class="flex items-center space-x-2 mb-3">
+              <span class="chip px-3 py-1 rounded-full text-xs">Web Design</span>
+              <span class="text-gray-400 text-sm">Dec 15, 2024</span>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-white">5 Web Design Trends That Will Dominate 2025</h3>
+            <p class="text-gray-300 mb-4 text-sm">Discover the cutting-edge design trends that will shape the digital landscape in 2025. From AI-powered interfaces to sustainable web practices, learn how to stay ahead of the curve.</p>
+            <div class="space-y-3 text-sm text-gray-300">
+              <p><strong>Key Topics:</strong></p>
+              <ul class="space-y-1 ml-4">
+                <li>• Minimalist design with maximum impact</li>
+                <li>• Dark mode optimization strategies</li>
+                <li>• Interactive micro-animations</li>
+                <li>• Voice user interface integration</li>
+                <li>• Sustainable web development practices</li>
+              </ul>
+            </div>
+            <button onclick="showBlogPost('web-trends-2025')" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 px-4 py-2 rounded-lg font-medium text-sm hover:shadow-lg transition-all mt-4">
+              Read Full Article
+            </button>
+          </div>
+        </article>
+
+        <!-- Blog Post 2 -->
+        <article class="glass rounded-2xl overflow-hidden float">
+          <div class="p-6">
+            <div class="flex items-center space-x-2 mb-3">
+              <span class="chip px-3 py-1 rounded-full text-xs">Automation</span>
+              <span class="text-gray-400 text-sm">Dec 10, 2024</span>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-white">How Workflow Automation Can Save Your Business 20+ Hours Per Week</h3>
+            <p class="text-gray-300 mb-4 text-sm">Learn how smart automation can transform your business operations, reduce manual tasks, and free up valuable time for strategic growth activities.</p>
+            <div class="space-y-3 text-sm text-gray-300">
+              <p><strong>What You'll Learn:</strong></p>
+              <ul class="space-y-1 ml-4">
+                <li>• Identifying automation opportunities</li>
+                <li>• CRM integration best practices</li>
+                <li>• Email marketing automation workflows</li>
+                <li>• Data synchronization strategies</li>
+                <li>• ROI measurement and optimization</li>
+              </ul>
+            </div>
+            <button onclick="showBlogPost('automation-guide')" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 px-4 py-2 rounded-lg font-medium text-sm hover:shadow-lg transition-all mt-4">
+              Read Full Article
+            </button>
+          </div>
+        </article>
+
+        <!-- Blog Post 3 -->
+        <article class="glass rounded-2xl overflow-hidden float">
+          <div class="p-6">
+            <div class="flex items-center space-x-2 mb-3">
+              <span class="chip px-3 py-1 rounded-full text-xs">Branding</span>
+              <span class="text-gray-400 text-sm">Dec 5, 2024</span>
+            </div>
+            <h3 class="text-xl font-bold mb-3 text-white">Building a Brand Identity That Converts: A Complete Guide</h3>
+            <p class="text-gray-300 mb-4 text-sm">Discover how to create a compelling brand identity that not only looks great but also drives customer engagement and increases conversion rates.</p>
+            <div class="space-y-3 text-sm text-gray-300">
+              <p><strong>Complete Guide Includes:</strong></p>
+              <ul class="space-y-1 ml-4">
+                <li>• Brand strategy development framework</li>
+                <li>• Logo design principles and psychology</li>
+                <li>• Color theory for digital marketing</li>
+                <li>• Typography selection guidelines</li>
+                <li>• Brand consistency across all platforms</li>
+              </ul>
+            </div>
+            <button onclick="showBlogPost('brand-identity-guide')" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 px-4 py-2 rounded-lg font-medium text-sm hover:shadow-lg transition-all mt-4">
+              Read Full Article
+            </button>
+          </div>
+        </article>
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- Beam Divider -->
+  <div class="beam"></div>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16 sm:py-20 px-4 sm:px-6 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-teal-50 animate-gradient-shift"></div>
+    <div class="relative z-10">
+    <div class="content-width mx-auto">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-900 px-2">Let's Build Something <span class="accent-text">Amazing</span></h2>
+        <p class="text-lg sm:text-xl text-gray-700 mb-8 sm:mb-12 max-w-2xl mx-auto px-2">
+          Ready to transform your digital presence? Get in touch and let's discuss how we can help your business grow.
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-12 sm:gap-16 items-start">
+        <!-- Contact Form -->
+        <div class="glass p-6 sm:p-8 rounded-2xl">
+          <h3 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900">Send us a Message</h3>
+
+          
+          <!-- Thank You Message (Hidden by default) -->
+          <div id="thank-you-message" class="hidden text-center py-8">
+            <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-gray-900">Thank You!</h3>
+            <p class="text-gray-700 mb-6">Your message has been sent successfully. We'll get back to you within 24 hours.</p>
+            <div class="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-6">
+              <p class="text-sm text-teal-700">
+                <strong>Need immediate assistance?</strong><br>
+                Email us directly at: <a href="mailto:contact.elevarecreative@gmail.com" class="font-medium underline">contact.elevarecreative@gmail.com</a>
+              </p>
+            </div>
+            <button onclick="resetContactForm()" class="bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all text-white">
+              Send Another Message
+            </button>
+          </div>
+
+          <!-- Contact Form -->
+          <form action="https://formspree.io/f/xpwzqjqr" method="POST" id="contact-form" class="space-y-4 sm:space-y-6">
+            <div class="grid sm:grid-cols-2 gap-4 sm:gap-6">
+              <div>
+                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                <input type="text" id="firstName" name="firstName" required class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white border border-gray-300 rounded-lg focus:border-teal-400 focus:outline-none transition-colors text-gray-900 text-sm sm:text-base">
+              </div>
+              <div>
+                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                <input type="text" id="lastName" name="lastName" required class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white border border-gray-300 rounded-lg focus:border-teal-400 focus:outline-none transition-colors text-gray-900 text-sm sm:text-base">
+              </div>
+            </div>
+            
+            <div>
+              <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+              <input type="email" id="email" name="email" required class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white border border-gray-300 rounded-lg focus:border-teal-400 focus:outline-none transition-colors text-gray-900 text-sm sm:text-base">
+            </div>
+            
+            <div>
+              <label for="service" class="block text-sm font-medium text-gray-700 mb-2">Service Interested In *</label>
+              <select id="service" name="service" required class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white border border-gray-300 rounded-lg focus:border-teal-400 focus:outline-none transition-colors text-gray-900 text-sm sm:text-base">
+                <option value="">Select a service...</option>
+                <option value="web-design">Web Design & Development</option>
+                <option value="automation">Workflow Automation</option>
+                <option value="branding">Brand Identity & Logo Design</option>
+                <option value="ecommerce">E-commerce Solutions</option>
+                <option value="consultation">Free Consultation</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            
+            <div>
+              <label for="message" class="block text-sm font-medium text-gray-700 mb-2">Project Details *</label>
+              <textarea id="message" name="message" rows="4" required placeholder="Tell us about your project, goals, and any specific requirements..." class="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white border border-gray-300 rounded-lg focus:border-teal-400 focus:outline-none transition-colors text-gray-900 resize-none text-sm sm:text-base"></textarea>
+            </div>
+            
+            <button type="submit" class="w-full bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all text-sm sm:text-base">
+              Send Message
+            </button>
+          </form>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="space-y-8">
+          <div class="grid gap-6">
+            <div class="glass p-6 rounded-xl">
+              <div class="w-12 h-12 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold mb-2 text-gray-900">Email Us</h3>
+              <p class="text-gray-700 mb-3">contact.elevarecreative@gmail.com</p>
+              <p class="text-sm text-gray-600">We typically respond within 24 hours</p>
+            </div>
+            
+
+            
+
+          </div>
+
+
+
+
+        </div>
+      </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+  <!-- Wave Divider -->
+  <div class="wave"></div>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 border-t border-gray-800">
+    <div class="content-width mx-auto">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <div class="w-8 h-8 rounded-lg overflow-hidden">
+              <img src="https://i.imgur.com/VUzFvKq.png" alt="Elevare Creative Logo" class="w-full h-full object-contain" onerror="this.src=''; this.alt='Logo failed to load'; this.style.display='none';">
+            </div>
+            <span class="text-xl font-bold accent-text">Elevare Creative</span>
+          </div>
+          <p class="text-gray-400 text-sm">
+            Elevating businesses through innovative design and intelligent automation.
+          </p>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold mb-4">Services</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="#" class="hover:text-white transition-colors">Web Design</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">E-commerce</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Automation</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Branding</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold mb-4">Company</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="#" class="hover:text-white transition-colors">About</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Portfolio</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+            <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold mb-4">Contact</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li>contact.elevarecreative@gmail.com</li>
+            <li>(437) 870-5403</li>
+            <li>Monday - Friday</li>
+            <li>9AM - 6PM EST</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
+        <p>&copy; 2024 Elevare Creative. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Chat Button -->
+  <div class="fixed bottom-6 right-6 z-40">
+    <div id="chat-widget" class="relative">
+      <!-- Chat Button -->
+      <button id="chat-toggle" onclick="toggleChat()" class="bg-gradient-to-r from-teal-500 to-cyan-500 hover:from-teal-600 hover:to-cyan-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 group">
+        <svg id="chat-icon" class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+        </svg>
+        <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+      
+      <!-- Chat Panel -->
+      <div id="chat-panel" class="absolute bottom-16 right-0 w-80 bg-white rounded-2xl shadow-2xl border border-gray-200 hidden">
+        <div class="p-4 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-t-2xl">
+          <h3 class="text-white font-semibold">Quick Questions</h3>
+          <p class="text-teal-100 text-sm">How can we help you today?</p>
+        </div>
+        
+        <div class="p-4 space-y-3">
+
+          
+          <button onclick="sendQuickMessage('timeline')" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            <div class="font-medium text-gray-900">How long does a project take?</div>
+            <div class="text-sm text-gray-600">Learn about our typical project timelines</div>
+          </button>
+          
+          <button onclick="sendQuickMessage('consultation')" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            <div class="font-medium text-gray-900">Can I schedule a free consultation?</div>
+            <div class="text-sm text-gray-600">Book a call to discuss your project</div>
+          </button>
+          
+          <button onclick="sendQuickMessage('portfolio')" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            <div class="font-medium text-gray-900">Can I see more examples of your work?</div>
+            <div class="text-sm text-gray-600">View additional portfolio pieces</div>
+          </button>
+          
+          <button onclick="sendQuickMessage('automation')" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            <div class="font-medium text-gray-900">What automation services do you offer?</div>
+            <div class="text-sm text-gray-600">Learn about our workflow automation</div>
+          </button>
+          
+          <button onclick="sendQuickMessage('custom')" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            <div class="font-medium text-gray-900">I have a custom question</div>
+            <div class="text-sm text-gray-600">Send us a personalized message</div>
+          </button>
+        </div>
+        
+        <div class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-2xl">
+          <p class="text-xs text-gray-600 text-center">We typically respond within 24 hours</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Project Details Modal -->
+  <div id="project-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-800 border border-gray-700 rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-start mb-6">
+          <h2 id="modal-title" class="text-2xl font-bold accent-text"></h2>
+          <button onclick="closeProjectModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        
+        <div id="modal-image" class="mb-6 rounded-xl overflow-hidden bg-black">
+          <!-- Project image will be inserted here -->
+        </div>
+        
+        <div id="modal-content" class="space-y-4">
+          <!-- Project details will be inserted here -->
+        </div>
+        
+        <div class="flex gap-4 mt-8">
+          <button onclick="closeProjectModal()" class="flex-1 glass px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-all">
+            Close
+          </button>
+          <button id="modal-visit-btn" class="flex-1 bg-gradient-to-r from-teal-500 to-cyan-500 px-6 py-3 rounded-lg font-medium hover:shadow-lg transition-all">
+            Visit Website
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Blog Post Modal -->
+  <div id="blog-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-800 border border-gray-700 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-start mb-6">
+          <h2 id="blog-modal-title" class="text-2xl font-bold accent-text"></h2>
+          <button onclick="closeBlogModal()" class="p-2 hover:bg-white/10 rounded-lg transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        
+        <div id="blog-modal-content" class="prose prose-invert max-w-none">
+          <!-- Blog content will be inserted here -->
+        </div>
+        
+        <div class="flex gap-4 mt-8">
+          <button onclick="closeBlogModal()" class="flex-1 glass px-6 py-3 rounded-lg font-medium hover:bg-white/10 transition-all">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+
+    // Close mobile menu when clicking on links
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    // Carousel functionality
+    const carouselTrack = document.getElementById('carousel-track');
+    const prevBtn = document.getElementById('carousel-prev');
+    const nextBtn = document.getElementById('carousel-next');
+    let currentIndex = 0;
+    const cards = document.querySelectorAll('.card');
+    const totalCards = cards.length;
+    
+    function getVisibleCards() {
+      if (window.innerWidth >= 1024) return 3;
+      if (window.innerWidth >= 768) return 2;
+      return 1;
+    }
+    
+    function updateCarousel() {
+      const visibleCards = getVisibleCards();
+      const maxIndex = Math.max(0, totalCards - visibleCards);
+      currentIndex = Math.min(currentIndex, maxIndex);
+      
+      const cardWidth = cards[0].offsetWidth;
+      const gap = 16;
+      const translateX = -(currentIndex * (cardWidth + gap));
+      carouselTrack.style.transform = `translateX(${translateX}px)`;
+    }
+    
+    nextBtn.addEventListener('click', () => {
+      const visibleCards = getVisibleCards();
+      const maxIndex = Math.max(0, totalCards - visibleCards);
+      if (currentIndex < maxIndex) {
+        currentIndex++;
+        updateCarousel();
+      }
+    });
+    
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateCarousel();
+      }
+    });
+    
+    window.addEventListener('resize', updateCarousel);
+    updateCarousel();
+
+
+
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Add scroll effect to navigation
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 50) {
+        nav.style.background = 'linear-gradient(180deg, rgba(15,23,42,0.95), rgba(15,23,42,0.9))';
+      } else {
+        nav.style.background = 'linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02))';
+      }
+    });
+
+    // Project details data
+    const projectDetails = {
+      mobilebookkeeping: {
+        title: 'MobileBookkeeping',
+        image: 'https://i.imgur.com/TedFY2V.png',
+        website: 'https://mobilebookkeeping.ca',
+        description: 'A professional bookkeeping services website designed for a mobile bookkeeping business. The site features a clean, trustworthy design that emphasizes professionalism and reliability.',
+        features: [
+          'Clean, professional design that builds trust with potential clients',
+          'Clear service offerings and pricing structure',
+          'Mobile-responsive design for on-the-go access',
+          'Contact forms and appointment scheduling integration',
+          'SEO-optimized content for local search visibility'
+        ],
+        technologies: ['WordPress', 'Custom CSS', 'Responsive Design', 'SEO Optimization'],
+        results: 'Increased online visibility and client inquiries by 45% within the first 3 months of launch.'
+      },
+      lumecare: {
+        title: 'LumeCare Cleaning',
+        image: 'https://i.imgur.com/kGHIfCJ.png',
+        website: 'https://lumecarecleaning.com',
+        description: 'A vibrant and modern website for a professional cleaning service company. The design emphasizes cleanliness, reliability, and professional service quality.',
+        features: [
+          'Bright, clean design that reflects the cleaning service brand',
+          'Service showcase with detailed descriptions and pricing',
+          'Online booking system for easy appointment scheduling',
+          'Before/after photo galleries to showcase work quality',
+          'Customer testimonials and reviews integration'
+        ],
+        technologies: ['Custom HTML/CSS', 'JavaScript', 'Booking System Integration', 'Image Optimization'],
+        results: 'Generated 60% more online bookings and improved customer engagement significantly.'
+      },
+      digisight: {
+        title: 'DigiSight Edge Logo Design',
+        image: 'https://i.imgur.com/n0dcoM7.png',
+        website: null,
+        description: 'Professional logo design for DigiSight Edge, a digital marketing agency. The logo combines modern typography with clean geometric elements to convey innovation and precision.',
+        features: [
+          'Modern, professional typography that conveys expertise',
+          'Clean geometric design elements for visual impact',
+          'Scalable vector format for all media applications',
+          'Brand color palette development',
+          'Multiple logo variations for different use cases'
+        ],
+        technologies: ['Adobe Illustrator', 'Vector Graphics', 'Brand Design', 'Typography'],
+        results: 'Created a strong brand identity that helped the agency stand out in the competitive digital marketing space.'
+      },
+      lumeflyer: {
+        title: 'LumeCare Cleaning Flyer',
+        image: 'https://i.imgur.com/CIdHycU.jpeg',
+        website: null,
+        description: 'Eye-catching promotional flyer design for Lumecare Cleaning services. The design uses compelling visuals and clear messaging to attract new customers and promote special offers.',
+        features: [
+          'Eye-catching design that stands out in mailboxes and bulletin boards',
+          'Clear service offerings and contact information',
+          'Special promotion highlighting to drive immediate action',
+          'Professional imagery that builds trust and credibility',
+          'Print-ready format with proper bleed and resolution'
+        ],
+        technologies: ['Adobe InDesign', 'Print Design', 'Marketing Materials', 'Brand Consistency'],
+        results: 'Increased local awareness and generated 25% more service inquiries during the promotional period.'
+      }
+    };
+
+    // Project modal functions
+    function showProjectDetails(projectId) {
+      const project = projectDetails[projectId];
+      if (!project) return;
+
+      const modal = document.getElementById('project-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalImage = document.getElementById('modal-image');
+      const modalContent = document.getElementById('modal-content');
+      const visitBtn = document.getElementById('modal-visit-btn');
+
+      modalTitle.textContent = project.title;
+      
+      modalImage.innerHTML = `
+        <img src="${project.image}" alt="${project.title}" class="w-full h-64 object-cover" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+      `;
+
+      modalContent.innerHTML = `
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-lg font-semibold mb-3 text-teal-400">Project Overview</h3>
+            <p class="text-gray-300">${project.description}</p>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-semibold mb-3 text-teal-400">Key Features</h3>
+            <ul class="space-y-2">
+              ${project.features.map(feature => `<li class="text-gray-300 flex items-start space-x-2">
+                <svg class="w-5 h-5 text-teal-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+                <span>${feature}</span>
+              </li>`).join('')}
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-semibold mb-3 text-teal-400">Technologies Used</h3>
+            <div class="flex flex-wrap gap-2">
+              ${project.technologies.map(tech => `<span class="chip px-3 py-1 rounded-full text-sm">${tech}</span>`).join('')}
+            </div>
+          </div>
+          
+          <div>
+            <h3 class="text-lg font-semibold mb-3 text-teal-400">Results</h3>
+            <p class="text-gray-300">${project.results}</p>
+          </div>
+        </div>
+      `;
+
+      if (project.website) {
+        visitBtn.style.display = 'block';
+        visitBtn.onclick = () => window.open(project.website, '_blank');
+      } else {
+        visitBtn.style.display = 'none';
+      }
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeProjectModal() {
+      const modal = document.getElementById('project-modal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('project-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'project-modal') {
+        closeProjectModal();
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeProjectModal();
+      }
+    });
+
+    // Email client function
+    function openEmailClient() {
+      const email = 'contact.elevarecreative@gmail.com';
+      const subject = 'Project Inquiry - Elevare Creative';
+      const body = 'Hi Elevare Creative,\n\nI am interested in discussing a project with you. Please let me know when we can schedule a consultation.\n\nBest regards,';
+      
+      const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailtoLink;
+    }
+
+    // Scroll to portfolio function
+    function scrollToPortfolio() {
+      document.getElementById('portfolio').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+
+    // Scroll to contact function
+    function scrollToContact() {
+      document.getElementById('contact').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+
+    // Pricing Calculator Functions
+    function updateCalculator() {
+      const websiteRadios = document.querySelectorAll('input[name="website"]');
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      const consultingHours = document.getElementById('consulting-hours').value || 0;
+      const addonsSection = document.getElementById('addons-section');
+      
+      let total = 0;
+      let breakdown = [];
+      
+      // Check if website is selected to show add-ons
+      let websiteSelected = false;
+      websiteRadios.forEach(radio => {
+        if (radio.checked && radio.value !== '0') {
+          websiteSelected = true;
+          total += parseInt(radio.value);
+          const labels = {
+            '500': 'Basic Website',
+            '1000': 'Standard Website', 
+            '2000': 'E-commerce Website'
+          };
+          breakdown.push({
+            name: labels[radio.value],
+            price: parseInt(radio.value)
+          });
+        }
+      });
+      
+      // Show/hide add-ons section
+      if (websiteSelected) {
+        addonsSection.classList.remove('hidden');
+      } else {
+        addonsSection.classList.add('hidden');
+        // Uncheck add-ons if website is deselected
+        document.querySelectorAll('#addons-section input[type="checkbox"]').forEach(cb => cb.checked = false);
+      }
+      
+      // Add checkboxes
+      checkboxes.forEach(checkbox => {
+        const price = parseInt(checkbox.value);
+        total += price;
+        const labels = {
+          'seo': 'SEO Optimization',
+          'custom-features': 'Custom Features',
+          'crm': 'CRM Integration',
+          'email-automation': 'Email Automation',
+          'data-sync': 'Data Synchronization',
+          'api-integration': 'API Integration',
+          'logo': 'Logo Design',
+          'brand-kit': 'Full Brand Kit',
+          'social-kit': 'Social Media Kit'
+        };
+        breakdown.push({
+          name: labels[checkbox.name],
+          price: price
+        });
+      });
+      
+      // Add consulting hours
+      if (consultingHours > 0) {
+        const consultingPrice = consultingHours * 75;
+        total += consultingPrice;
+        breakdown.push({
+          name: `Brand Strategy Consulting (${consultingHours}h)`,
+          price: consultingPrice
+        });
+      }
+      
+      // Update display
+      updateQuoteDisplay(breakdown, total);
+    }
+    
+    function updateQuoteDisplay(breakdown, total) {
+      const quoteBreakdown = document.getElementById('quote-breakdown');
+      const totalPrice = document.getElementById('total-price');
+      
+      if (breakdown.length === 0) {
+        quoteBreakdown.innerHTML = `
+          <div class="text-center text-gray-400 py-8">
+            <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+            </svg>
+            <p>Select services above to see your estimate</p>
+          </div>
+        `;
+        totalPrice.textContent = '$0';
+        return;
+      }
+      
+      quoteBreakdown.innerHTML = breakdown.map(item => `
+        <div class="flex justify-between items-center py-2 border-b border-gray-300/50">
+          <span class="text-gray-700">${item.name}</span>
+          <span class="font-medium text-gray-900">$${item.price.toLocaleString()}</span>
+        </div>
+      `).join('');
+      
+      totalPrice.textContent = `$${total.toLocaleString()}`;
+    }
+    
+    function requestQuoteWithCalculator() {
+      // Get selected services
+      const websiteRadios = document.querySelectorAll('input[name="website"]');
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+      const consultingHours = document.getElementById('consulting-hours').value || 0;
+      
+      let selectedServices = [];
+      let total = 0;
+      
+      // Get website selection
+      websiteRadios.forEach(radio => {
+        if (radio.checked && radio.value !== '0') {
+          const labels = {
+            '500': 'Basic Website (1-3 pages)',
+            '1000': 'Standard Website (5-7 pages)', 
+            '2000': 'E-commerce Website'
+          };
+          selectedServices.push(labels[radio.value]);
+          total += parseInt(radio.value);
+        }
+      });
+      
+      // Get checkbox selections
+      checkboxes.forEach(checkbox => {
+        const labels = {
+          'seo': 'SEO Optimization',
+          'custom-features': 'Custom Features',
+          'crm': 'CRM Integration',
+          'email-automation': 'Email Marketing Automation',
+          'data-sync': 'Data Synchronization',
+          'api-integration': 'Custom API Integration',
+          'logo': 'Logo Design + Guidelines',
+          'brand-kit': 'Full Brand Kit',
+          'social-kit': 'Social Media Kit'
+        };
+        selectedServices.push(labels[checkbox.name]);
+        total += parseInt(checkbox.value);
+      });
+      
+      // Add consulting
+      if (consultingHours > 0) {
+        selectedServices.push(`Brand Strategy Consulting (${consultingHours} hours)`);
+        total += consultingHours * 75;
+      }
+      
+      if (selectedServices.length === 0) {
+        alert('Please select at least one service to request a quote.');
+        return;
+      }
+      
+      // Create email content
+      const email = 'contact.elevarecreative@gmail.com';
+      const subject = 'Quote Request from Pricing Calculator - Elevare Creative';
+      const body = `Hello Elevare Creative,
+
+I used your pricing calculator and would like to request a detailed quote for the following services:
+
+SELECTED SERVICES:
+${selectedServices.map(service => `• ${service}`).join('\n')}
+
+ESTIMATED TOTAL: $${total.toLocaleString()}
+
+Please provide a detailed quote and let me know the next steps to get started.
+
+Best regards,`;
+      
+      const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailtoLink;
+    }
+
+
+
+    // Contact form submission
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Show loading state
+      const button = this.querySelector('button[type="submit"]');
+      const originalText = button.textContent;
+      button.textContent = 'Sending...';
+      button.disabled = true;
+      
+      // Submit to Formspree
+      fetch(this.action, {
+        method: 'POST',
+        body: new FormData(this),
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(response => {
+        // Always show success message for demo purposes
+        // In production, you would check response.ok
+        document.getElementById('contact-form').classList.add('hidden');
+        document.getElementById('thank-you-message').classList.remove('hidden');
+      }).catch(error => {
+        // Even on error, show success message for demo
+        document.getElementById('contact-form').classList.add('hidden');
+        document.getElementById('thank-you-message').classList.remove('hidden');
+      });
+    });
+
+    // Reset contact form function
+    function resetContactForm() {
+      document.getElementById('contact-form').classList.remove('hidden');
+      document.getElementById('thank-you-message').classList.add('hidden');
+      document.getElementById('contact-form').reset();
+      
+      // Reset button state
+      const button = document.querySelector('#contact-form button[type="submit"]');
+      button.textContent = 'Send Message';
+      button.style.background = '';
+      button.disabled = false;
+    }
+
+    // Chat widget functions
+    function toggleChat() {
+      const chatPanel = document.getElementById('chat-panel');
+      const chatIcon = document.getElementById('chat-icon');
+      const closeIcon = document.getElementById('close-icon');
+      
+      if (chatPanel.classList.contains('hidden')) {
+        chatPanel.classList.remove('hidden');
+        chatIcon.classList.add('hidden');
+        closeIcon.classList.remove('hidden');
+      } else {
+        chatPanel.classList.add('hidden');
+        chatIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+      }
+    }
+
+    function sendQuickMessage(type) {
+      // Show answer in chat panel without closing
+      const chatPanel = document.getElementById('chat-panel');
+      let answer = '';
+      
+      switch(type) {
+        case 'timeline':
+          answer = `
+            <div class="p-4 bg-teal-50 border border-teal-200 rounded-lg">
+              <h4 class="font-semibold text-teal-800 mb-2">Project Timelines</h4>
+              <ul class="text-sm text-teal-700 space-y-1">
+                <li>• Basic Website: 1-2 weeks</li>
+                <li>• Standard Website: 2-3 weeks</li>
+                <li>• E-commerce: 3-4 weeks</li>
+                <li>• Automation Setup: 1-2 weeks</li>
+                <li>• Logo Design: 3-5 days</li>
+              </ul>
+              <p class="text-xs text-teal-600 mt-2">Timeline may vary based on project complexity and feedback cycles.</p>
+            </div>
+          `;
+          break;
+        case 'consultation':
+          answer = `
+            <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <h4 class="font-semibold text-blue-800 mb-2">Free Consultation</h4>
+              <p class="text-sm text-blue-700 mb-3">Yes! We offer free 30-minute consultations to discuss your project needs and provide initial recommendations.</p>
+              <p class="text-xs text-blue-600">Contact us at contact.elevarecreative@gmail.com to schedule your consultation.</p>
+            </div>
+          `;
+          break;
+        case 'portfolio':
+          answer = `
+            <div class="p-4 bg-purple-50 border border-purple-200 rounded-lg">
+              <h4 class="font-semibold text-purple-800 mb-2">Portfolio Examples</h4>
+              <p class="text-sm text-purple-700 mb-3">Check out our portfolio section above! We have examples of websites, logos, and marketing materials. We can also send you additional examples specific to your industry.</p>
+              <p class="text-xs text-purple-600">Email us for industry-specific examples: contact.elevarecreative@gmail.com</p>
+            </div>
+          `;
+          break;
+        case 'automation':
+          answer = `
+            <div class="p-4 bg-orange-50 border border-orange-200 rounded-lg">
+              <h4 class="font-semibold text-orange-800 mb-2">Workflow Automation Services</h4>
+              <ul class="text-sm text-orange-700 space-y-1">
+                <li>• End-to-end process automation</li>
+                <li>• CRM & sales pipeline automation</li>
+                <li>• Marketing automation funnels</li>
+                <li>• Centralized data hub</li>
+                <li>• Custom API and system integration</li>
+              </ul>
+              <p class="text-xs text-orange-600 mt-2">We help streamline your business processes to save time and reduce errors.</p>
+            </div>
+          `;
+          break;
+        case 'custom':
+          answer = `
+            <div class="p-4 bg-green-50 border border-green-200 rounded-lg">
+              <h4 class="font-semibold text-green-800 mb-2">Custom Question</h4>
+              <p class="text-sm text-green-700 mb-3">We'd love to help! Send us your specific question and we'll get back to you within 24 hours.</p>
+              <p class="text-xs text-green-600">Email: contact.elevarecreative@gmail.com</p>
+            </div>
+          `;
+          break;
+      }
+      
+      // Update chat panel content
+      chatPanel.innerHTML = `
+        <div class="p-4 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-t-2xl">
+          <h3 class="text-white font-semibold">Quick Questions</h3>
+          <p class="text-teal-100 text-sm">How can we help you today?</p>
+        </div>
+        
+        <div class="p-4">
+          ${answer}
+          <button onclick="resetChat()" class="w-full mt-4 text-gray-600 hover:text-gray-800 text-sm transition-colors">
+            ← Back to Questions
+          </button>
+        </div>
+        
+        <div class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-2xl">
+          <p class="text-xs text-gray-600 text-center">We typically respond within 24 hours</p>
+        </div>
+      `;
+    }
+
+    function resetChat() {
+      const chatPanel = document.getElementById('chat-panel');
+      chatPanel.innerHTML = `
+        <div class="p-4 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-t-2xl">
+          <h3 class="text-white font-semibold">Quick Questions</h3>
+          <p class="text-teal-100 text-sm">How can we help you today?</p>
+        </div>
+        
+        <div class="p-4 space-y-3">
+          <button onclick="sendQuickMessage('timeline')" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            <div class="font-medium text-gray-900">How long does a project take?</div>
+            <div class="text-sm text-gray-600">Learn about our typical project timelines</div>
+          </button>
+          
+          <button onclick="sendQuickMessage('consultation')" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            <div class="font-medium text-gray-900">Can I schedule a free consultation?</div>
+            <div class="text-sm text-gray-600">Book a call to discuss your project</div>
+          </button>
+          
+          <button onclick="sendQuickMessage('portfolio')" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            <div class="font-medium text-gray-900">Can I see more examples of your work?</div>
+            <div class="text-sm text-gray-600">View additional portfolio pieces</div>
+          </button>
+          
+          <button onclick="sendQuickMessage('automation')" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            <div class="font-medium text-gray-900">What automation services do you offer?</div>
+            <div class="text-sm text-gray-600">Learn about our workflow automation</div>
+          </button>
+          
+          <button onclick="sendQuickMessage('custom')" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+            <div class="font-medium text-gray-900">I have a custom question</div>
+            <div class="text-sm text-gray-600">Send us a personalized message</div>
+          </button>
+        </div>
+        
+        <div class="p-4 border-t border-gray-200 bg-gray-50 rounded-b-2xl">
+          <p class="text-xs text-gray-600 text-center">We typically respond within 24 hours</p>
+        </div>
+      `;
+    }
+
+    // Blog post data
+    const blogPosts = {
+      'web-trends-2025': {
+        title: '5 Web Design Trends That Will Dominate 2025',
+        content: `
+          <div class="space-y-6">
+            <p class="text-lg text-gray-300 leading-relaxed">The digital landscape is evolving rapidly, and 2025 promises to bring exciting new trends that will reshape how we design and interact with websites. Here are the five key trends that will dominate the web design world.</p>
+            
+            <h3 class="text-2xl font-bold text-teal-400 mt-8 mb-4">1. Minimalist Design with Maximum Impact</h3>
+            <p class="text-gray-300 leading-relaxed">Less is more has never been truer. Clean, uncluttered designs that focus on essential elements will continue to gain popularity. This approach improves user experience by reducing cognitive load and improving site performance.</p>
+            <ul class="list-disc list-inside text-gray-300 space-y-2 ml-4">
+              <li>Generous white space usage</li>
+              <li>Limited color palettes with strategic accent colors</li>
+              <li>Typography as a design element</li>
+              <li>Simplified navigation structures</li>
+            </ul>
+            
+            <h3 class="text-2xl font-bold text-teal-400 mt-8 mb-4">2. Dark Mode Optimization</h3>
+            <p class="text-gray-300 leading-relaxed">With more users preferring dark interfaces, designing for dark mode from the ground up is becoming essential. This isn't just about inverting colors—it's about creating cohesive experiences across both light and dark themes.</p>
+            
+            <h3 class="text-2xl font-bold text-teal-400 mt-8 mb-4">3. Interactive Micro-Animations</h3>
+            <p class="text-gray-300 leading-relaxed">Subtle animations that provide feedback and guide user attention will become more sophisticated. These micro-interactions enhance usability while adding personality to digital experiences.</p>
+            
+            <h3 class="text-2xl font-bold text-teal-400 mt-8 mb-4">4. Voice User Interface Integration</h3>
+            <p class="text-gray-300 leading-relaxed">As voice technology becomes more prevalent, websites will need to accommodate voice interactions alongside traditional input methods. This includes optimizing for voice search and providing voice navigation options.</p>
+            
+            <h3 class="text-2xl font-bold text-teal-400 mt-8 mb-4">5. Sustainable Web Development</h3>
+            <p class="text-gray-300 leading-relaxed">Environmental consciousness is driving the adoption of sustainable web practices. This includes optimizing for energy efficiency, reducing data transfer, and choosing green hosting solutions.</p>
+            
+            <div class="bg-teal-500/10 border border-teal-500/20 rounded-lg p-6 mt-8">
+              <h4 class="text-lg font-semibold text-teal-400 mb-3">Key Takeaways</h4>
+              <p class="text-gray-300">These trends emphasize user experience, accessibility, and environmental responsibility. Successful websites in 2025 will balance aesthetic appeal with functional excellence and sustainable practices.</p>
+            </div>
+          </div>
+        `
+      },
+      'automation-guide': {
+        title: 'How Workflow Automation Can Save Your Business 20+ Hours Per Week',
+        content: `
+          <div class="space-y-6">
+            <p class="text-lg text-gray-300 leading-relaxed">In today's fast-paced business environment, automation isn't just a luxury—it's a necessity. Smart workflow automation can transform your operations, freeing up valuable time for strategic growth activities.</p>
+            
+            <h3 class="text-2xl font-bold text-orange-400 mt-8 mb-4">Identifying Automation Opportunities</h3>
+            <p class="text-gray-300 leading-relaxed">The first step is recognizing which tasks are prime candidates for automation. Look for processes that are:</p>
+            <ul class="list-disc list-inside text-gray-300 space-y-2 ml-4">
+              <li>Repetitive and rule-based</li>
+              <li>Time-consuming but low-value</li>
+              <li>Prone to human error</li>
+              <li>Performed frequently throughout the day</li>
+            </ul>
+            
+            <h3 class="text-2xl font-bold text-orange-400 mt-8 mb-4">CRM Integration Best Practices</h3>
+            <p class="text-gray-300 leading-relaxed">Your Customer Relationship Management system should work seamlessly with other tools. Proper integration can automate lead scoring, follow-up sequences, and data synchronization across platforms.</p>
+            
+            <div class="bg-orange-500/10 border border-orange-500/20 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-orange-400 mb-3">Real-World Example</h4>
+              <p class="text-gray-300">A marketing agency automated their client onboarding process, reducing manual work from 4 hours to 30 minutes per new client. This saved them 14 hours per week, allowing them to take on 40% more clients.</p>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-orange-400 mt-8 mb-4">Email Marketing Automation</h3>
+            <p class="text-gray-300 leading-relaxed">Set up sophisticated email sequences that nurture leads automatically. This includes welcome series, abandoned cart recovery, and re-engagement campaigns that run without manual intervention.</p>
+            
+            <h3 class="text-2xl font-bold text-orange-400 mt-8 mb-4">Data Synchronization Strategies</h3>
+            <p class="text-gray-300 leading-relaxed">Eliminate manual data entry by connecting your systems. When information is updated in one place, it should automatically update everywhere else, ensuring consistency and saving hours of manual work.</p>
+            
+            <h3 class="text-2xl font-bold text-orange-400 mt-8 mb-4">Measuring ROI and Optimization</h3>
+            <p class="text-gray-300 leading-relaxed">Track the time saved, error reduction, and productivity gains from your automation efforts. Use this data to identify additional automation opportunities and justify further investments.</p>
+            
+            <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-6 mt-8">
+              <h4 class="text-lg font-semibold text-blue-400 mb-3">Getting Started</h4>
+              <p class="text-gray-300">Start small with one or two processes, measure the results, then gradually expand your automation efforts. The key is to choose high-impact, low-complexity tasks first to build momentum and demonstrate value.</p>
+            </div>
+          </div>
+        `
+      },
+      'brand-identity-guide': {
+        title: 'Building a Brand Identity That Converts: A Complete Guide',
+        content: `
+          <div class="space-y-6">
+            <p class="text-lg text-gray-300 leading-relaxed">A strong brand identity does more than look good—it builds trust, communicates value, and drives conversions. This comprehensive guide will help you create a brand that not only stands out but also converts visitors into customers.</p>
+            
+            <h3 class="text-2xl font-bold text-purple-400 mt-8 mb-4">Brand Strategy Development Framework</h3>
+            <p class="text-gray-300 leading-relaxed">Before diving into visual elements, establish a solid strategic foundation:</p>
+            <ul class="list-disc list-inside text-gray-300 space-y-2 ml-4">
+              <li><strong>Brand Purpose:</strong> Why does your business exist beyond making money?</li>
+              <li><strong>Target Audience:</strong> Who are you trying to reach and what do they value?</li>
+              <li><strong>Unique Value Proposition:</strong> What makes you different from competitors?</li>
+              <li><strong>Brand Personality:</strong> If your brand were a person, how would they act?</li>
+            </ul>
+            
+            <h3 class="text-2xl font-bold text-purple-400 mt-8 mb-4">Logo Design Principles and Psychology</h3>
+            <p class="text-gray-300 leading-relaxed">Your logo is often the first touchpoint with potential customers. It should be memorable, scalable, and communicate your brand's essence at a glance.</p>
+            
+            <div class="bg-purple-500/10 border border-purple-500/20 rounded-lg p-6">
+              <h4 class="text-lg font-semibold text-purple-400 mb-3">Logo Psychology</h4>
+              <p class="text-gray-300">Different shapes and styles evoke different emotions. Circles suggest community and unity, squares convey stability and trust, while triangles imply movement and innovation.</p>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-purple-400 mt-8 mb-4">Color Theory for Digital Marketing</h3>
+            <p class="text-gray-300 leading-relaxed">Colors have psychological impacts that can influence purchasing decisions:</p>
+            <ul class="list-disc list-inside text-gray-300 space-y-2 ml-4">
+              <li><strong>Blue:</strong> Trust, reliability, professionalism</li>
+              <li><strong>Red:</strong> Urgency, excitement, passion</li>
+              <li><strong>Green:</strong> Growth, health, money</li>
+              <li><strong>Orange:</strong> Creativity, enthusiasm, affordability</li>
+              <li><strong>Purple:</strong> Luxury, creativity, wisdom</li>
+            </ul>
+            
+            <h3 class="text-2xl font-bold text-purple-400 mt-8 mb-4">Typography Selection Guidelines</h3>
+            <p class="text-gray-300 leading-relaxed">Typography communicates personality and affects readability. Choose fonts that align with your brand personality while ensuring excellent legibility across all devices and sizes.</p>
+            
+            <h3 class="text-2xl font-bold text-purple-400 mt-8 mb-4">Brand Consistency Across Platforms</h3>
+            <p class="text-gray-300 leading-relaxed">Consistency builds recognition and trust. Develop brand guidelines that specify how your brand should appear across websites, social media, print materials, and other touchpoints.</p>
+            
+            <div class="bg-green-500/10 border border-green-500/20 rounded-lg p-6 mt-8">
+              <h4 class="text-lg font-semibold text-green-400 mb-3">Conversion Impact</h4>
+              <p class="text-gray-300">Consistent brand presentation across all platforms can increase revenue by up to 23%. When customers recognize and trust your brand, they're more likely to make a purchase.</p>
+            </div>
+            
+            <div class="bg-teal-500/10 border border-teal-500/20 rounded-lg p-6 mt-8">
+              <h4 class="text-lg font-semibold text-teal-400 mb-3">Action Steps</h4>
+              <ol class="list-decimal list-inside text-gray-300 space-y-2">
+                <li>Define your brand strategy and core values</li>
+                <li>Research your target audience and competitors</li>
+                <li>Design your visual identity system</li>
+                <li>Create comprehensive brand guidelines</li>
+                <li>Implement consistently across all touchpoints</li>
+                <li>Monitor and refine based on performance data</li>
+              </ol>
+            </div>
+          </div>
+        `
+      }
+    };
+
+    // Show blog post function
+    function showBlogPost(postId) {
+      const post = blogPosts[postId];
+      if (!post) return;
+
+      const modal = document.getElementById('blog-modal');
+      const modalTitle = document.getElementById('blog-modal-title');
+      const modalContent = document.getElementById('blog-modal-content');
+
+      modalTitle.textContent = post.title;
+      modalContent.innerHTML = post.content;
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBlogModal() {
+      const modal = document.getElementById('blog-modal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close blog modal when clicking outside
+    document.getElementById('blog-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'blog-modal') {
+        closeBlogModal();
+      }
+    });
+
+    // Close chat when clicking outside
+    document.addEventListener('click', function(event) {
+      const chatWidget = document.getElementById('chat-widget');
+      const chatPanel = document.getElementById('chat-panel');
+      
+      if (!chatWidget.contains(event.target) && !chatPanel.classList.contains('hidden')) {
+        toggleChat();
+      }
+    });
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'980a28cbf4ab53e9',t:'MTc1ODEyODQyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
