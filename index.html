@@ -7,94 +7,65 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root{
-      --brand-dark:#0F766E;    /* Vibrant Emerald */
-      --brand-med:#14B8A6;     /* Bright Teal */
-      --brand-light:#5EEAD4;   /* Light Teal */
-      --brand-accent:#F59E0B;  /* Vibrant Amber */
-      --brand-slate:#475569;   /* Cool Slate */
+      --brand-dark:#0F766E;
+      --brand-med:#14B8A6;
+      --brand-light:#5EEAD4;
+      --brand-accent:#F59E0B;
+      --brand-slate:#475569;
     }
-    /* Brand background and overlays */
-    .grid-bg {
-      background:
-        radial-gradient(1000px 400px at 20% 10%, color-mix(in oklab, var(--brand-light) 18%, transparent), transparent 60%),
-        radial-gradient(900px 500px at 80% 10%, color-mix(in oklab, var(--brand-med) 14%, transparent), transparent 60%),
-        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(255,255,255,.06) 1px, transparent 1px);
-      background-size: auto, auto, 60px 60px, 60px 60px;
-      background-position: center;
+
+    /* Typing background */
+    .typing-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      opacity: 0.15;
+      font-family: monospace;
+      color: var(--brand-med);
+      white-space: pre;
+      font-size: 14px;
+      line-height: 1.4rem;
+      pointer-events: none;
     }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    .typing-line {
+      display: inline-block;
+      overflow: hidden;
+      border-right: 2px solid var(--brand-light);
+      animation: typing 8s steps(80, end) infinite alternate;
+    }
+
     .glass { backdrop-filter: blur(10px); background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.10); }
     .glow { box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand-light) 18%, transparent), 0 10px 30px color-mix(in oklab, var(--brand-med) 30%, transparent); }
     .accent-text { background: linear-gradient(135deg, var(--brand-light) 0%, var(--brand-med) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
     .chip { border: 1px solid color-mix(in oklab, var(--brand-med) 70%, transparent); background: color-mix(in oklab, var(--brand-med) 25%, transparent); color: #ffffff; font-weight: 500; }
-    .float { transition: transform .25s ease, box-shadow .25s ease; }
-    .float:hover { transform: translateY(-6px); box-shadow: 0 16px 40px color-mix(in oklab, var(--brand-med) 18%, transparent); }
     .content-width { max-width: 1200px; }
-    :target { scroll-margin-top: 90px; }
 
-      /* Divider Styling */
-.divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  margin: 3rem 0;
-}
-
-.divider .line {
-  flex: 1;
-  height: 2px;
-  background: linear-gradient(to right, rgba(63, 188, 164, 0), rgba(63, 188, 164, 0.8), rgba(63, 188, 164, 0));
-}
-
-.divider .circle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #3FBCA4;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  margin: 0 1rem;
-  box-shadow: 0 0 12px rgba(63, 188, 164, 0.6);
-}
-
-.divider .letter {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: bold;
-  animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-    /* Carousel */
-    .carousel-viewport { overflow: hidden; }
-    .carousel-track { display: flex; gap: 16px; will-change: transform; transition: transform .45s ease; }
-    .card { min-width: 85%; max-width: 85%; }
-    @media (min-width: 768px) {
-      .card { min-width: calc((100% - 16px) / 2); max-width: calc((100% - 16px) / 2); }
-    }
-    @media (min-width: 1024px) {
-      .card { min-width: calc((100% - 32px) / 3); max-width: calc((100% - 32px) / 3); }
-    }
-
-
-    
     /* Smooth scrolling */
     html { scroll-behavior: smooth; }
-    
+
     /* Mobile menu animation */
     .mobile-menu { transform: translateX(-100%); transition: transform 0.3s ease; }
     .mobile-menu.open { transform: translateX(0); }
-
   </style>
 </head>
-<body class="bg-slate-800 text-white grid-bg min-h-screen">
-  
+<body class="bg-slate-900 text-white min-h-screen relative">
+
+  <!-- Background typing effect -->
+  <div class="typing-bg p-6">
+    <div class="typing-line">
+{ "project": "Elevare Creative",
+  "services": ["Web Design", "Automation", "Digital Reality"],
+  "status": "Transforming Ideas 💡 into Digital Reality 🚀"
+}
+    </div>
+  </div>
+
   <!-- Navigation -->
   <nav class="fixed top-0 w-full z-50 bg-slate-800">
     <div class="content-width mx-auto px-6 py-4">
@@ -103,9 +74,9 @@
           <div class="w-8 h-8 rounded-lg overflow-hidden">
             <img src="https://i.imgur.com/VUzFvKq.png" alt="Elevare Creative Logo" class="w-full h-full object-contain" onerror="this.src=''; this.alt='Logo failed to load'; this.style.display='none';">
           </div>
-         <span class="text-xl font-bold" style="color:#3AB8A6;">Elevare Creative</span>
+          <span class="text-xl font-bold" style="color:#3AB8A6;">Elevare Creative</span>
         </div>
-        
+
         <div class="hidden md:flex items-center space-x-8">
           <a href="#services" class="text-gray-300 hover:text-white transition-colors">Services</a>
           <a href="#portfolio" class="text-gray-300 hover:text-white transition-colors">Portfolio</a>
@@ -117,7 +88,7 @@
             Get Started
           </button>
         </div>
-        
+
         <button id="mobile-menu-btn" class="md:hidden p-2">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -125,7 +96,7 @@
         </button>
       </div>
     </div>
-    
+
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="mobile-menu md:hidden fixed inset-y-0 left-0 w-64 bg-slate-800 border-r border-gray-700 p-6">
       <div class="flex flex-col space-y-6 mt-16">
@@ -143,7 +114,7 @@
   </nav>
 
   <!-- Hero Section -->
-  <section class="pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6">
+  <section class="pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6 relative z-10">
     <div class="content-width mx-auto text-center">
       <div class="inline-flex items-center space-x-2 chip px-3 sm:px-4 py-2 rounded-full mb-6 sm:mb-8">
         <span class="w-2 h-2 bg-teal-400 rounded-full animate-pulse"></span>
@@ -154,11 +125,11 @@
         Turning Ideas
         <span class="accent-text">into Digital Reality</span>
       </h1>
-      
+
       <p class="text-lg sm:text-xl text-gray-300 mb-8 sm:mb-12 max-w-2xl mx-auto px-2">
         We craft stunning websites, automate your workflows, and build digital experiences that drive results. From concept to launch, we're your creative technology partner.
       </p>
-      
+
       <div class="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4">
         <button onclick="scrollToContact()" class="bg-gradient-to-r from-teal-500 to-cyan-500 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-medium text-base sm:text-lg glow hover:scale-105 transition-all">
           Start Your Project
@@ -167,11 +138,12 @@
           View Our Work
         </button>
       </div>
-      </div>
-      </div>
-    </div>
     </div>
   </section>
+
+</body>
+</html>
+
   
   
   <!-- Services Section -->
@@ -1763,6 +1735,7 @@ Best regards,`;
   </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'980a28cbf4ab53e9',t:'MTc1ODEyODQyMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
+
 
 
 
